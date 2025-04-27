@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:44:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/04/27 17:45:46 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/04/27 17:56:06 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ static void look_at(int ac, char **av, t_philo *philo)
         j = 0;
         while (av[i][j])
         {
-            if ((av[i][j] >= '0' && av[i][j] <= '9') || av[i][0] == '+')
-            j++;
+            if ((av[i][j] >= '0' && av[i][j] <= '9') || (av[i][0] == '+' && av[i][1] != '+'))
+                j++;
             else
             {
                 free(philo);
