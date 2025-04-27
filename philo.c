@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:38:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/04/27 15:04:39 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/04/27 17:46:20 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ int main (int ac, char **av)
             exit(1);
         initialisation(philo);
         parsing(ac, av, philo);
-        if (!philo)
-            exit(1);
     }
     exit(1);
 }

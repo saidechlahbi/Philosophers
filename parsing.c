@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:44:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/04/27 15:52:50 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/04/27 17:45:46 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ static void look_at(int ac, char **av, t_philo *philo)
     int i;
     int j;
 
-    i = 0;
+    i = 1;
     while (i < ac)
     {
         j = 0;
-        while (av[i])
+        while (av[i][j])
         {
-            if ((av[i][j] > '0' && av[i][j] < '9') || av[i][0] == '+')
-                j++;
+            if ((av[i][j] >= '0' && av[i][j] <= '9') || av[i][0] == '+')
+            j++;
             else
             {
                 free(philo);
@@ -63,7 +63,7 @@ void parsing(int ac, char **av, t_philo *philo)
     int j;
 
     look_at(ac, av, philo);
-    if (ac == 4)
+    if (ac == 5)
     {
         philo->number_of_philosophers = ft_atoi(av[1], philo);
         philo->time_to_die = ft_atoi(av[2], philo);
