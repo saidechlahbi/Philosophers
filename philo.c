@@ -6,20 +6,13 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:38:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/04/27 17:48:34 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/04/28 10:27:31 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void initialisation(t_philo *philo)
-{
-    philo->number_of_philosophers = 0;
-    philo->time_to_die = 0;
-    philo->time_to_eat = 0;
-    philo->time_to_sleep = 0;
-    philo->number_of_times_each_philosopher_must_eat = 0;
-}
+
 
 int main (int ac, char **av)
 {
@@ -27,14 +20,8 @@ int main (int ac, char **av)
 
     if (ac == 5 || ac == 6)
     {
-        philo = malloc(sizeof(philo));
-        if (!philo)
-            exit(1);
-        initialisation(philo);
-        parsing(ac, av, philo);
-        printf("%d %d %d %d %d\n", philo->number_of_philosophers, 
-            philo->number_of_times_each_philosopher_must_eat, philo->time_to_die,
-             philo->time_to_eat, philo->time_to_sleep);
+        philo = parsing(ac, av);
+        
     }
     exit(1);
 }

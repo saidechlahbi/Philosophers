@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:02:13 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/04/27 17:17:06 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/04/28 10:54:20 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ typedef struct s_philo
     int number_of_times_each_philosopher_must_eat;
 }t_philo;
 
-void parsing(int ac, char **av, t_philo *philo);
+typedef struct s_philosophers
+{
+    pthread_t id;
+    pthread_mutex_t chopstick;
+} t_philosophers;
 
-#endif 
+t_philo *parsing(int ac, char **av);
+
+#endif
