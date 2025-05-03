@@ -6,13 +6,13 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:44:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/04/28 10:19:55 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/03 11:55:41 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int ft_atoi(char *str, t_philo *philo)
+static int ft_atoi(char *str, t_simulation *philo)
 {
     long result;
 
@@ -56,7 +56,7 @@ static void look_at(int ac, char **av)
     }   
 }
 
-static void initialisation(t_philo *philo)
+static void initialisation(t_simulation *philo)
 {
     philo->number_of_philosophers = 0;
     philo->time_to_die = 0;
@@ -65,14 +65,14 @@ static void initialisation(t_philo *philo)
     philo->number_of_times_each_philosopher_must_eat = 0;
 }
 
-t_philo *parsing(int ac, char **av)
+t_simulation *parsing(int ac, char **av)
 {
-    t_philo *philo;
+    t_simulation *philo;
     int i;
     int j;
 
     look_at(ac, av);
-    philo = malloc(sizeof(t_philo));
+    philo = malloc(sizeof(t_simulation));
     if (!philo)
         exit(1);
     initialisation(philo);
