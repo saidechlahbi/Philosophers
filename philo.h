@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:02:13 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/03 12:00:45 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:54:34 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,36 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct s_philosophers
 {
-    pthread_t id;
-    pthread_mutex_t chopstick;
+    int id;
+    pthread_mutex_t r_chopstick;
+    pthread_mutex_t l_chopstick;
 } t_philosophers;
 
-typedef struct s_simulation
+typedef struct s_data
 {
-    
+    t_philosophers *philosophers;
+    pthread_t *threads;
+    pthread_mutex_t *chopsticks;
     int number_of_philosophers;
     int time_to_die;
     int time_to_eat;
     int time_to_sleep;
     int number_of_times_each_philosopher_must_eat;
-    t_philosophers *philo;
-}t_simulation;
+}t_data;
 
+/*-------------------- parsing----------------*/
+t_data *parsing(int ac, char **av);
 
-t_simulation *parsing(int ac, char **av);
+/*-------------------- clean------------------*/
+void clean(t_data *data);
+
+/*---------------- initialisation-------------*/
+void init_threads(t_data *data);
+void init_chopstick(void *data);
+
 
 #endif
