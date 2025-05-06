@@ -1,8 +1,8 @@
 CC = cc
-FLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 # Files
-FILES =   parsing.c  philo.c 
+FILES =   init_all.c  parsing.c  philo.c algorithme.c
 
 # Object files
 OBJ = $(FILES:.c=.o)
