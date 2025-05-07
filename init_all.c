@@ -6,12 +6,11 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 14:05:41 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/06 17:45:25 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/07 21:35:59 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 void init_philo(t_data *data)
 {
@@ -23,17 +22,20 @@ void init_philo(t_data *data)
         clean(data);
         exit(1);
     }
-    data->philosophers->id = malloc(data->number_of_philosophers * sizeof(int));
-    if (!data->philosophers->id)
+    data->val = malloc(4);
+    if (!data->val)
     {
         clean(data);
         exit(1);
     }
-    memset(data->philosophers, 0, sizeof(t_philosophers));
-    memset(data->philosophers->id, 0, data->number_of_philosophers * sizeof(int));
-    i = -1;
-    while (i++ < data->number_of_philosophers - 1)
-        *data->philosophers->id = i;
+    *data->val = 0;
+    memset(data->philosophers, 0, data->number_of_philosophers * sizeof(t_philosophers));
+    i = 0;
+    while (i < data->number_of_philosophers)
+    {
+        data->philosophers[i].id= i;
+        i++;
+    }
 }
 
 void init_chopstick(t_data *data)
@@ -54,6 +56,7 @@ void init_chopstick(t_data *data)
         i++;
     }
 }
+
 void take_chopstick(t_data *data)
 {
     int i;
@@ -68,6 +71,7 @@ void take_chopstick(t_data *data)
     data->philosophers->l_chopstick = &data->chopsticks[i];
     data->philosophers->r_chopstick = &data->chopsticks[0];
 }
+
 void init_threads(t_data *data)
 {
     int i;
@@ -86,4 +90,3 @@ void init_threads(t_data *data)
     while (i++ < data->number_of_philosophers - 1)
         pthread_join(data->threads[i], NULL);
 }
-

@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/06 17:56:09 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/07 21:36:18 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,31 +84,33 @@
 //     return data;
 // }
 
-void mimi (t_data *arg)
+void mimi (t_data *arg, int nb)
 {
-    printf("i am mimi %d\n",(*arg->philosophers->id));
+    printf("i am mimi %d\n",arg->philosophers[nb].id);
 }
-void nini(t_data *arg)
+void nini(t_data *arg, int nb)
 {
-    printf("i am nini %d\n",(*arg->philosophers->id));
+    printf("i am nini %d\n",arg->philosophers[nb].id);
 }
 
-void khikhi(t_data *arg)
+void khikhi(t_data *arg, int nb)
 {
-    printf("i am khikhi%d\n",(*arg->philosophers->id));
+    printf("i am khikhi%d\n",arg->philosophers[nb].id);
 }
 void *routine(void *arg)
 {
     t_data *data;
 
     data = (t_data *)arg;
-int i = 1;
+    int i = 1;
     while (i--)
     {
-        mimi(data);
-        nini(data);
-        khikhi(data);
+        mimi(data, *(data->val));
+        nini(data, *(data->val));
+        khikhi(data, *(data->val));
         printf("======\n");
     }
+    *(data->val) += 1;
+    
     return data;
 }

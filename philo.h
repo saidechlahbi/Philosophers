@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:02:13 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/06 17:41:41 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/07 21:16:50 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,14 @@
 
 typedef struct s_philosophers
 {
-    int *id;
+    int id;
     pthread_mutex_t *r_chopstick;
     pthread_mutex_t *l_chopstick;
 } t_philosophers;
 
 typedef struct s_data
 {
+    int *val;
     t_philosophers *philosophers;
     pthread_t *threads;
     pthread_mutex_t *chopsticks;

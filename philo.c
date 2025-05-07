@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:38:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/06 16:12:54 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/07 16:41:14 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,6 @@ int main (int ac, char **av)
         init_chopstick(data);
         take_chopstick(data);
         init_threads(data);
-
-        
-        //     printf("%d %d %d %d %d\n", data->number_of_philosophers
-        //     ,data->time_to_die,data->time_to_eat
-        // , data->time_to_sleep, data->number_of_times_each_philosopher_must_eat);
     }
  
     // printf("%d  %d  is eating\n");
