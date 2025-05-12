@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:38:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/07 16:41:14 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/12 12:05:27 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void clean(t_data *data)
 {
-    if (data->philosophers)
-        free(data->philosophers);
+    // if (data->philosophers)
+    //     free(data->philosophers);
     if (data->threads)
         free(data->threads);
     if (data->chopsticks)
@@ -27,14 +27,15 @@ void clean(t_data *data)
 int main (int ac, char **av)
 {
     t_data *data;
+    t_philosophers *philo;
 
     if (ac == 5 || ac == 6)
     {
         data = parsing(ac, av);
-        init_philo(data);
+        philo = init_philo(data);
         init_chopstick(data);
-        take_chopstick(data);
-        init_threads(data);
+        take_chopstick(philo, data);
+        init_threads(philo, data);
     }
  
     // printf("%d  %d  is eating\n");
