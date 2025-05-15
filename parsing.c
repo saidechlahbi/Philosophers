@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:44:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/06 11:10:09 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:31:25 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,6 @@ t_data *parsing(int ac, char **av)
         data->time_to_sleep = ft_atoi(av[4], data);
         data->number_of_times_each_philosopher_must_eat = ft_atoi(av[5], data);
     }
+    // data->start_time = 
     return data;
 }

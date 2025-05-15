@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:02:13 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/12 11:53:50 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:12:33 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 typedef struct s_data
 {
+    long start_time;
     pthread_t *threads;
     pthread_mutex_t *chopsticks;
     int number_of_philosophers;
