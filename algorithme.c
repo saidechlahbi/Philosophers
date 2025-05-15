@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/15 22:36:53 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/15 23:34:37 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 
 void eating (t_philosophers *arg)
 {
-    printf("%d  %d  is eating\n", arg->data->time_to_eat, arg->id);
+    arg->time = get_time();
+    printf("%ld  %d  is eating\n", arg->time - arg->data->start_time, arg->id);
     usleep(arg->data->time_to_eat * 1000);
     pthread_mutex_unlock(arg->r_chopstick);
     pthread_mutex_unlock(arg->l_chopstick);

@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:38:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/15 23:12:49 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/15 23:32:03 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@ void clean(t_data *data)
         free(data->chopsticks);
     free(data);
     return ;
+}
+
+long    get_time()
+{
+    struct timeval time;
+    gettimeofday(&time, NULL);
+    return ((time.tv_usec * 1000) + (time.tv_sec / 1000));
 }
 
 int main (int ac, char **av)
@@ -36,11 +43,4 @@ int main (int ac, char **av)
         init_threads(philo, data);
     }
     exit(1);
-}
-
-long    get_time()
-{
-    struct timeval time;
-    gettimeofday(&time, NULL);
-    return (time.tv_usec * 1000 + time.tv_sec / 1000);
 }

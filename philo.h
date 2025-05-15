@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:02:13 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/15 22:12:33 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/15 23:33:25 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 typedef struct s_data
 {
@@ -34,6 +35,7 @@ typedef struct s_data
 typedef struct s_philosophers
 {
     int id;
+    long time;
     pthread_mutex_t *r_chopstick;
     pthread_mutex_t *l_chopstick;
     t_data *data;
@@ -45,7 +47,7 @@ t_data *parsing(int ac, char **av);
 /*-------------------- clean------------------*/
 void clean(t_data *data);
 
-
+long    get_time();
 
 /*---------------- algorithme----------------*/
 void *routine(void *arg);
