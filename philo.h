@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:02:13 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/15 23:33:25 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/18 11:29:33 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_data
 typedef struct s_philosophers
 {
     int id;
-    long time;
+    long last_meal;
     pthread_mutex_t *r_chopstick;
     pthread_mutex_t *l_chopstick;
     t_data *data;
@@ -45,7 +45,7 @@ typedef struct s_philosophers
 t_data *parsing(int ac, char **av);
 
 /*-------------------- clean------------------*/
-void clean(t_data *data);
+void clean(t_philosophers *philo);
 
 long    get_time();
 

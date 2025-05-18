@@ -6,20 +6,22 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:38:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/15 23:32:03 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/18 14:08:23 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void clean(t_data *data)
+void clean(t_philosophers *philo)
 {
-    if (data->threads)
-        free(data->threads);
-    if (data->chopsticks)
-        free(data->chopsticks);
+    t_data *data;
+
+    data = philo->data;
+    free(philo);
+    free(data->chopsticks);
+    free(data->threads);
     free(data);
-    return ;
+    exit(1);
 }
 
 long    get_time()

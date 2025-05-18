@@ -6,13 +6,13 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:44:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/15 23:25:12 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/18 11:27:10 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int ft_atoi(char *str, t_data *philo)
+static int ft_atoi(char *str, t_data *data)
 {
     long result;
 
@@ -26,7 +26,7 @@ static int ft_atoi(char *str, t_data *philo)
         result = (result * 10) + (*str - 48);
         if (result < -2147483648 || result > 2147483647)
         {
-            free(philo);
+            free(data);
             exit(1);
         }
         str++;
