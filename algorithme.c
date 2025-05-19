@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/19 18:38:20 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/20 00:21:30 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,30 +33,38 @@ void sleeping(t_philosophers *arg)
 }
 void *routine(void *arg)
 {
-    t_philosophers *data;
+    t_philosophers *philo;
 
-    data = (t_philosophers *)arg;
-    if (data->id % 2)
+    philo = (t_philosophers *)arg;
+    if (philo->data->number_of_philosophers == 1)
+    {
+        pthread_mutex_lock(philo->l_chopstick);
+        philo->last_meal = get_time();
+        printf("%ld  %d has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+        usleep(philo->data->time_to_die);
+        return NULL;
+    }
+    if (philo->id % 2)
         usleep(1000);
     while (1)
     {
-        if (data->id % 2 == 0)
+        if (philo->id % 2 == 0)
         {
-            pthread_mutex_lock(data->l_chopstick);
-            printf("%ld  %d has taken a fork\n",  get_time() - data->data->start_time, data->id);
-            pthread_mutex_lock(data->r_chopstick);
-            printf("%ld  %d has taken a fork\n",  get_time() - data->data->start_time, data->id);
+            pthread_mutex_lock(philo->l_chopstick);
+            printf("%ld  %d has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+            pthread_mutex_lock(philo->r_chopstick);
+            printf("%ld  %d has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
         }else
         {
-            pthread_mutex_lock(data->l_chopstick);
-            printf("%ld  %d has taken a fork\n",  get_time() - data->data->start_time, data->id);
-            pthread_mutex_lock(data->r_chopstick);
-            printf("%ld  %d has taken a fork\n",  get_time() - data->data->start_time, data->id);
+            pthread_mutex_lock(philo->l_chopstick);
+            printf("%ld  %d has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+            pthread_mutex_lock(philo->r_chopstick);
+            printf("%ld  %d has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
         }
-        data->last_meal = get_time();
-        eating(data);
-        sleeping(data);
-        thinking(data);
+        philo->last_meal = get_time();
+        eating(philo);
+        sleeping(philo);
+        thinking(philo);
     }
-    return data;
+    return philo;
 }

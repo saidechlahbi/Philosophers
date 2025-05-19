@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 14:05:41 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/19 18:31:04 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/20 00:07:33 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,27 +70,26 @@ void take_chopstick(t_philosophers *philo,t_data *data)
 
 void *monitor(void *philo)
 {
-    (void)philo;
-    // t_philosophers *philosophers;
-    // int number_philo;
-    // int i;
+    t_philosophers *philosophers;
+    int number_philo;
+    int i;
 
-    // philosophers = (t_philosophers *)philo;
-    // number_philo = philosophers->data->number_of_philosophers;
-    // while (1)
-    // {
-    //     i = 0;
-    //     while (i < number_philo)
-    //     {
-    //         if (get_time() - philosophers[i].last_meal >= philosophers[i].data->time_to_die)
-    //         {
-    //             printf("%ld  %d  died\n", get_time() - philosophers[i].data->start_time, philosophers[i].id);
-    //             exit(1);
-    //         }
-    //         // printf("%ld\n",get_time() - philosophers[i].last_meal);
-    //         i++;
-    //     }
-    // }
+    philosophers = (t_philosophers *)philo;
+    number_philo = philosophers->data->number_of_philosophers;
+    while (1)
+    {
+        i = 0;
+        while (i < number_philo)
+        {
+            if (get_time() - philosophers[i].last_meal >= philosophers[i].data->time_to_die)
+            {
+                printf("%ld  %d  died\n", get_time() - philosophers[i].data->start_time, philosophers[i].id);
+                exit(1);
+            }
+            i++;
+        }
+        usleep(500);
+    }
     return NULL;
 }
 
