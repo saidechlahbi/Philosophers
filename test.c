@@ -5,53 +5,52 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-int main(int ac, char **av, char **env)
-{
+#include <pthread.h>
+
+// void *routine(void *data)
+// {
+//     *(int *)data +=1;
+//     return NULL;
+// }
+// int main(int ac, char **av, char **env)
+// {
+//     pthread_t    thread;
     
-    // close(fd);
-    // int f = fork();
-    // if (f == 0)
-    // {
-     
-        
-        // }else
-        // {
-            //     waitpid(f, NULL, 0);
-            // }
-            
-            // int fd = open("file", O_CREAT | O_RDWR, 0777);
-            // int a = dup(fd);
-            // write (fd,"hello", 5);
-            // char str[6];
-            // read(a, str, 6);
-            // printf("%s\n",str);
-            // close(0);
-            int fd = open("file", O_CREAT | O_RDWR, 0777);
-            // int a = open("file", O_CREAT | O_RDWR, 0777);
-            // write (fd,"hello", 5);
-            // char str[6];
-            // read(a, str, 6);
-            // write(1, "hello", 5);
-            // dup2(fd, 1);
-            // write(1, "hello", 5);
-            // printf("%d\n",fd);
-            // int ff = fork();
-            // int fd[2];
-            // pipe(fd);
-            // printf("%d %d \n", fd[0], fd[1]);
-            // if (ff == 0)
-            // {
-            dup2(fd, 1);
-                char *str[] = {"l",  NULL};
-                
-                char *s = "/usr/bin/ls";
-                
-                execve(s,str , env);
-            // }else
-            // {
-            //     printf("hello\n");
-            //     waitpid(ff, NULL, 0);
-            // }
-            
-        // waitpid(fd, &c, 0);
+//     int a = 7;
+//     pthread_create(&thread,NULL, routine, (void *)&a);
+//     // pthread_join(thread, NULL);
+//     printf("%d\n", a);
+//     printf("hello\n");
+// }
+
+#include <stdio.h>
+#include <pthread.h>
+#include <unistd.h>
+
+void* worker_thread(void* arg) {
+    printf("Worker thread starting...\n");
+    // sleep(2);
+    printf("Worker thread finishing...\n");
+    return NULL;
+}
+
+int main() {
+    pthread_t thread;
+    
+    // Create a new thread
+   pthread_create(&thread, NULL, worker_thread, NULL);
+
+    
+    // Detach the thread
+    // pthread_detach(thread);
+
+    
+    printf("Main thread: Worker thread has been detached\n");
+    printf("Main thread: Main thread can exit without waiting\n");
+    
+    // Sleep briefly to allow seeing the worker thread output
+    sleep(1);
+    // printf("Main thread exiting...\n");
+    
+    return 0;
 }
