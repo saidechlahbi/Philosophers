@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:02:13 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/20 18:02:35 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/20 20:27:21 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 typedef struct s_data
 {
-    
+    pthread_mutex_t mutex_for_printf;;
     long start_time;
     pthread_t *threads;
     pthread_mutex_t *chopsticks;
@@ -53,7 +53,7 @@ long    get_time();
 
 /*---------------- algorithme----------------*/
 void *routine(void *arg);
-
+void ft_printf(t_philosophers *philo, char *str, long time, int id);
 
 /*---------------- initialisation-------------*/
 t_philosophers *init_philo(t_data *data);

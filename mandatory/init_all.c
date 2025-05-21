@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 14:05:41 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/20 17:42:31 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:55:01 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void init_chopstick(t_data *data)
         pthread_mutex_init(&data->chopsticks[i], NULL);
         i++;
     }
+    pthread_mutex_init(&data->mutex_for_printf, NULL);
 }
 
 void take_chopstick(t_philosophers *philo,t_data *data)
@@ -103,9 +104,7 @@ void *monitor(void *philo)
         {
             if (get_time() - philosophers[i].last_meal >= philosophers[i].data->time_to_die)
             {
-                printf("%ld %ld %d\n", get_time() - philosophers[i].last_meal,
-                 philosophers[i].last_meal , philosophers[i].data->time_to_die);
-                printf("%ld  %d  died\n", get_time() - philosophers[i].data->start_time, philosophers[i].id);
+                ft_printf(philosophers , "%ld  %d  died\n", get_time() - philosophers[i].data->start_time, philosophers[i].id);
                 exit(1);
             }
             i++;

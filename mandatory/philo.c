@@ -6,11 +6,18 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:38:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/19 18:16:46 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/20 20:29:21 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void ft_printf(t_philosophers *philo, char *str, long time, int id)
+{
+    pthread_mutex_lock(&philo->data->mutex_for_printf);
+    printf(str, time, id);
+    pthread_mutex_unlock(&philo->data->mutex_for_printf);
+}
 
 void clean(t_philosophers *philo)
 {
