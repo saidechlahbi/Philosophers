@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:02:13 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/18 11:29:33 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:29:58 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
 #include <pthread.h>
 #include <stdio.h>
@@ -35,6 +35,7 @@ typedef struct s_data
 typedef struct s_philosophers
 {
     int id;
+    int pid;
     long last_meal;
     pthread_mutex_t *r_chopstick;
     pthread_mutex_t *l_chopstick;

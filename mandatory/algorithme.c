@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/20 21:53:03 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:54:01 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void *routine(void *arg)
     {
         pthread_mutex_lock(philo->l_chopstick);
         philo->last_meal = get_time();
-        ft_printf(philo ,"%ld  %d has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+        ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
         usleep(philo->data->time_to_die);
         return NULL;
     }
@@ -54,15 +54,15 @@ void *routine(void *arg)
         if (philo->id % 2 == 0)
         {
             pthread_mutex_lock(philo->l_chopstick);
-            ft_printf(philo ,"%ld  %d has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+            ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
             pthread_mutex_lock(philo->r_chopstick);
-            ft_printf(philo ,"%ld  %d has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+            ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
         }else
         {
             pthread_mutex_lock(philo->l_chopstick);
-            ft_printf(philo ,"%ld  %d has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+            ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
             pthread_mutex_lock(philo->r_chopstick);
-            ft_printf(philo ,"%ld  %d has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+            ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
         }
         philo->last_meal = get_time();
         eating(philo);

@@ -2,7 +2,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 
 # Files
-FILES =   init_all.c  parsing.c  philo.c algorithme.c
+FILES =  algorithme_bonus.c philo_bonus.c init_all_bonus.c parsing_bonus.c
 
 # Object files
 OBJ = $(FILES:.c=.o)
@@ -11,7 +11,7 @@ OBJ = $(FILES:.c=.o)
 NAME = philo
 
 # Header
-HEADER =  philo.h
+HEADER =  philo_bonus.h
 
 
 # Rules
