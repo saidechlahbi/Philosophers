@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 14:05:41 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/21 20:25:40 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/25 13:51:52 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,90 +34,24 @@ t_philosophers *init_philo(t_data *data)
     return philosophers;
 }
 
-void init_chopstick(t_data *data)
+void routine (t_philosophers *philo, t_data *data)
 {
-    int i;
-    
-    data->chopsticks = malloc(data->number_of_philosophers *sizeof(pthread_mutex_t));
-    if (!data->chopsticks)
+    while(1)
     {
-        free(data);
-        exit(1);
-    }
-    memset(data->chopsticks, 0, data->number_of_philosophers * sizeof(pthread_mutex_t));
-    i = 0;
-    while (i < data->number_of_philosophers)
-    {
-        pthread_mutex_init(&data->chopsticks[i], NULL);
-        i++;
+        
     }
 }
 
-void take_chopstick(t_philosophers *philo,t_data *data)
+void init_philo(t_philosophers *philo, t_data *data)
 {
     int i;
 
-    i = 0;
-    while (i < data->number_of_philosophers - 1)
-    {
-        philo[i].l_chopstick = &data->chopsticks[i];
-        philo[i].r_chopstick = &data->chopsticks[i + 1];
-        i++;
-    }
-    philo[i].l_chopstick = &data->chopsticks[i];
-    philo[i].r_chopstick = &data->chopsticks[0];
-}
-
-void *monitor(void *philo)
-{
-    t_philosophers *philosophers;
-    int number_philo;
-    int i;
-
-    philosophers = (t_philosophers *)philo;
-    number_philo = philosophers->data->number_of_philosophers;
-    while (1)
-    {
-        i = 0;
-        while (i < number_philo)
-        {
-            if (get_time() - philosophers[i].last_meal >= philosophers[i].data->time_to_die)
-            {
-                printf("%ld  %d  died\n", get_time() - philosophers[i].data->start_time, philosophers[i].id);
-                exit(1);
-            }
-            i++;
-        }
-        usleep(500);
-    }
-    return NULL;
-}
-
-void init_threads(t_philosophers *philo, t_data *data)
-{
-    int i;
-
-    pthread_t monitoring;
-    data->threads = malloc(data->number_of_philosophers * sizeof(pthread_t));
-    if (!data->threads)
-    {
-        free(data);
-        exit(1);
-    }
-    memset(data->threads, 0, data->number_of_philosophers * sizeof(pthread_t ));
     i = 0;
     while (i < data->number_of_philosophers)
     {
-        if(pthread_create(&data->threads[i], NULL,routine, (void *)(&philo[i])))
-        clean(philo);
+        philo->pid = fork();
+        if (philo->pid == 0)
+            routine(philo, data);
         i++;
     }
-    if(pthread_create(&monitoring, NULL, monitor, (void *)philo))
-        clean(philo);
-    i = -1;
-    while (i++ < data->number_of_philosophers - 1)
-        if(pthread_join(data->threads[i], NULL))
-            clean(philo);
-    if(pthread_join(monitoring, NULL))
-        clean(philo);
 }

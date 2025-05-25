@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:02:13 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/21 20:29:58 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/24 18:11:34 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 typedef struct s_data
 {
     long start_time;
-    pthread_t *threads;
-    pthread_mutex_t *chopsticks;
     int number_of_philosophers;
     int time_to_die;
     int time_to_eat;
@@ -37,8 +35,6 @@ typedef struct s_philosophers
     int id;
     int pid;
     long last_meal;
-    pthread_mutex_t *r_chopstick;
-    pthread_mutex_t *l_chopstick;
     t_data *data;
 } t_philosophers;
 
@@ -56,8 +52,8 @@ void *routine(void *arg);
 
 /*---------------- initialisation-------------*/
 t_philosophers *init_philo(t_data *data);
-void init_chopstick(t_data *data);
-void take_chopstick(t_philosophers *philo,t_data *data);
-void init_threads(t_philosophers *philo, t_data *data);
+// void init_chopstick(t_data *data);
+// void take_chopstick(t_philosophers *philo,t_data *data);
+// void init_threads(t_philosophers *philo, t_data *data);
 
 #endif
