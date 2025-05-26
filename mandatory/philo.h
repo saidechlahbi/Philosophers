@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:02:13 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/26 11:27:01 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:31:43 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 typedef struct s_data
 {
+    int must_stop;
     pthread_mutex_t mutex_for_printf;;
     long start_time;
     pthread_mutex_t *chopsticks;
@@ -29,7 +30,7 @@ typedef struct s_data
     int time_to_die;
     int time_to_eat;
     int time_to_sleep;
-    int number_of_times_each_philosopher_must_eat;
+    int n_of_t_e_p_m_e;
 }t_data;
 
 typedef struct s_philosophers

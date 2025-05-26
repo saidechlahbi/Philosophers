@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/26 11:53:21 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:41:48 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int how_mush(t_philosophers *philo)
     i = 0;
     while (i < philo->data->number_of_philosophers)
     {
-        if (philo[i].nb_eat >= philo[i].data->number_of_times_each_philosopher_must_eat)
+        if (philo[i].nb_eat >= philo[i].data->n_of_t_e_p_m_e)
             i++;
         else
             return 0;        
@@ -29,27 +29,28 @@ int how_mush(t_philosophers *philo)
     return 1;
 }
 
-void *monitor(void *philo)
+void *monitor(void *arg)
 {
-    t_philosophers *philosophers;
+    t_philosophers *philo;
     int number_philo;
     int i;
 
-    philosophers = (t_philosophers *)philo;
-    number_philo = philosophers->data->number_of_philosophers;
+    philo = (t_philosophers *)arg;
+    number_philo = philo->data->number_of_philosophers;
     while (1)
     {
-        if (philosophers->data->number_of_times_each_philosopher_must_eat)
+        if (philo->data->n_of_t_e_p_m_e)
             if (how_mush(philo))
-                exit(0);
-        usleep(philosophers->data->time_to_die * 1000);
+                return (philo->data->must_stop = 1, NULL);
+        usleep(philo->data->time_to_die * 1000);
         i = 0;
         while (i < number_philo)
         {
-            if (get_time() - philosophers[i].last_meal >= philosophers[i].data->time_to_die)
+            if (get_time() - philo[i].last_meal >= philo[i].data->time_to_die)
             {
-                ft_printf(philosophers , "%ld  %d  died\n", get_time() - philosophers[i].data->start_time, philosophers[i].id);
-                exit(1);
+                philo->data->must_stop = 1;
+                printf("%ld  %d  died\n", get_time() - philo[i].data->start_time, philo[i].id);
+                return (NULL);
             }
             i++;
         }
@@ -58,16 +59,34 @@ void *monitor(void *philo)
     return NULL;
 }
 
-void daily_day (t_philosophers *arg)
+static void daily_day (t_philosophers *philo)
 {
-    arg->nb_eat++;
-    ft_printf(arg ,"%ld  %d  is eating\n", get_time() - arg->data->start_time, arg->id);
-    usleep(arg->data->time_to_eat * 1000);
-    pthread_mutex_unlock(arg->r_chopstick);
-    pthread_mutex_unlock(arg->l_chopstick);
-    ft_printf(arg ,"%ld  %d  is sleeping\n", get_time() - arg->data->start_time, arg->id);
-    usleep(arg->data->time_to_sleep * 1000);
-    ft_printf(arg ,"%ld  %d  is thinking\n", get_time() - arg->data->start_time, arg->id);
+    philo->nb_eat++;
+    ft_printf(philo ,"%ld  %d  is eating\n", get_time() - philo->data->start_time, philo->id);
+    usleep(philo->data->time_to_eat * 1000);
+    pthread_mutex_unlock(philo->r_chopstick);
+    pthread_mutex_unlock(philo->l_chopstick);
+    ft_printf(philo ,"%ld  %d  is sleeping\n", get_time() - philo->data->start_time, philo->id);
+    usleep(philo->data->time_to_sleep * 1000);
+    ft_printf(philo ,"%ld  %d  is thinking\n", get_time() - philo->data->start_time, philo->id);
+}
+
+static void taken_forck(t_philosophers *philo)
+{
+    if (philo->id % 2 == 0)
+    {
+        pthread_mutex_lock(philo->l_chopstick);
+        ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+        pthread_mutex_lock(philo->r_chopstick);
+        ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+    }else
+    {
+        pthread_mutex_lock(philo->l_chopstick);
+        ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+        pthread_mutex_lock(philo->r_chopstick);
+        ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+    }
+    philo->last_meal = get_time();
 }
 
 void *routine(void *arg)
@@ -89,20 +108,9 @@ void *routine(void *arg)
         usleep(1000);
     while (1)
     {
-        if (philo->id % 2 == 0)
-        {
-            pthread_mutex_lock(philo->l_chopstick);
-            ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
-            pthread_mutex_lock(philo->r_chopstick);
-            ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
-        }else
-        {
-            pthread_mutex_lock(philo->l_chopstick);
-            ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
-            pthread_mutex_lock(philo->r_chopstick);
-            ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
-        }
-        philo->last_meal = get_time();
+        if (philo->data->must_stop)
+            return NULL;
+        taken_forck(philo);
         daily_day(philo);
     }
     return philo;

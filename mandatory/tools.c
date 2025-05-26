@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:38:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/26 11:32:08 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:40:02 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void ft_printf(t_philosophers *philo, char *str, long time, int id)
 {
+    if (philo->data->must_stop)
+        return;
     pthread_mutex_lock(&philo->data->mutex_for_printf);
     printf(str, time, id);
     pthread_mutex_unlock(&philo->data->mutex_for_printf);
