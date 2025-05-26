@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 14:05:41 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/20 21:55:01 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/26 11:48:21 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,14 @@ t_philosophers *init_philo(t_data *data)
     if (!philosophers)
     {
         free(data);
-        exit(1);
+        return NULL;
     }
-    memset(philosophers, 0, data->number_of_philosophers * sizeof(t_philosophers));
+    if (!memset(philosophers, 0, data->number_of_philosophers * sizeof(t_philosophers)))
+    {
+        free(data);
+        free(philosophers);
+        return NULL;
+    }
     i = 0;
     while (i < data->number_of_philosophers)
     {
@@ -34,7 +39,7 @@ t_philosophers *init_philo(t_data *data)
     return philosophers;
 }
 
-void init_chopstick(t_data *data)
+t_data  *init_chopstick(t_data *data)
 {
     int i;
     
@@ -42,9 +47,14 @@ void init_chopstick(t_data *data)
     if (!data->chopsticks)
     {
         free(data);
-        exit(1);
+        return NULL;
     }
-    memset(data->chopsticks, 0, data->number_of_philosophers * sizeof(pthread_mutex_t));
+    if (!memset(data->chopsticks, 0, data->number_of_philosophers * sizeof(pthread_mutex_t)))
+    {
+        free(data->chopsticks);
+        free(data);
+        return NULL;
+    }
     i = 0;
     while (i < data->number_of_philosophers)
     {
@@ -52,6 +62,7 @@ void init_chopstick(t_data *data)
         i++;
     }
     pthread_mutex_init(&data->mutex_for_printf, NULL);
+    return data;
 }
 
 void take_chopstick(t_philosophers *philo,t_data *data)
@@ -69,77 +80,34 @@ void take_chopstick(t_philosophers *philo,t_data *data)
     philo[i].r_chopstick = &data->chopsticks[0];
 }
 
-int how_mush(t_philosophers *philo)
-{
-    int i;
-
-    i = 0;
-    while (i < philo->data->number_of_philosophers)
-    {
-        if (philo[i].nb_eat >= philo[i].data->number_of_times_each_philosopher_must_eat)
-            i++;
-        else
-            return 0;        
-    }
-    printf("simulation stop\n");
-    return 1;
-}
-
-void *monitor(void *philo)
-{
-    t_philosophers *philosophers;
-    int number_philo;
-    int i;
-
-    philosophers = (t_philosophers *)philo;
-    number_philo = philosophers->data->number_of_philosophers;
-    while (1)
-    {
-        if (philosophers->data->number_of_times_each_philosopher_must_eat)
-            if (how_mush(philo))
-                exit(0);
-        usleep(philosophers->data->time_to_die * 1000);
-        i = 0;
-        while (i < number_philo)
-        {
-            if (get_time() - philosophers[i].last_meal >= philosophers[i].data->time_to_die)
-            {
-                ft_printf(philosophers , "%ld  %d  died\n", get_time() - philosophers[i].data->start_time, philosophers[i].id);
-                exit(1);
-            }
-            i++;
-        }
-        usleep(500);
-    }
-    return NULL;
-}
-
 void init_threads(t_philosophers *philo, t_data *data)
 {
     int i;
 
     pthread_t monitoring;
-    data->threads = malloc(data->number_of_philosophers * sizeof(pthread_t));
-    if (!data->threads)
-    {
-        free(data);
-        exit(1);
-    }
-    memset(data->threads, 0, data->number_of_philosophers * sizeof(pthread_t ));
-    i = 0;
+    i = -1;
     philo->data->start_time = get_time();
-    while (i < data->number_of_philosophers)
-    {
-        if(pthread_create(&data->threads[i], NULL,routine, (void *)(&philo[i])))
-        clean(philo);
-        i++;
-    }
+    while (i++ < data->number_of_philosophers -1)
+        if(pthread_create(&philo[i].thread, NULL,routine, (void *)(&philo[i])))
+        {
+            clean(philo);
+            return;
+        }
     if(pthread_create(&monitoring, NULL, monitor, (void *)philo))
+    {
         clean(philo);
+        return;
+    }
     i = -1;
     while (i++ < data->number_of_philosophers - 1)
-        if(pthread_join(data->threads[i], NULL))
+        if(pthread_join(philo[i].thread, NULL))
+        {
             clean(philo);
+            return;
+        }
     if(pthread_join(monitoring, NULL))
+    {
         clean(philo);
+        return;
+    }
 }

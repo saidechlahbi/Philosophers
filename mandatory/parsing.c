@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:44:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/20 17:46:25 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/26 11:08:19 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,9 @@ t_data *parsing(int ac, char **av)
     look_at(ac, av);
     data = malloc(sizeof(t_data));
     if (!data)
-        exit(1);
-    memset(data, 0, sizeof(t_data));
+        return NULL;
+    if (!memset(data, 0, sizeof(t_data)))
+        return NULL;
     if (ac == 5)
     {
         data->number_of_philosophers = ft_atoi(av[1], data);

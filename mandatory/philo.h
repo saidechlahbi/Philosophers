@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:02:13 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/20 20:27:21 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/26 11:27:01 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ typedef struct s_data
 {
     pthread_mutex_t mutex_for_printf;;
     long start_time;
-    pthread_t *threads;
     pthread_mutex_t *chopsticks;
     int number_of_philosophers;
     int time_to_die;
@@ -35,6 +34,7 @@ typedef struct s_data
 
 typedef struct s_philosophers
 {
+    pthread_t thread;
     int id;
     long last_meal;
     int nb_eat;
@@ -53,11 +53,12 @@ long    get_time();
 
 /*---------------- algorithme----------------*/
 void *routine(void *arg);
+void *monitor(void *philo);
 void ft_printf(t_philosophers *philo, char *str, long time, int id);
 
 /*---------------- initialisation-------------*/
 t_philosophers *init_philo(t_data *data);
-void init_chopstick(t_data *data);
+t_data  *init_chopstick(t_data *data);
 void take_chopstick(t_philosophers *philo,t_data *data);
 void init_threads(t_philosophers *philo, t_data *data);
 

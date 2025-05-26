@@ -1,35 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:38:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/26 11:49:13 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/26 11:32:08 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int main (int ac, char **av)
+void ft_printf(t_philosophers *philo, char *str, long time, int id)
+{
+    pthread_mutex_lock(&philo->data->mutex_for_printf);
+    printf(str, time, id);
+    pthread_mutex_unlock(&philo->data->mutex_for_printf);
+}
+
+void clean(t_philosophers *philo)
 {
     t_data *data;
-    t_philosophers *philo;
 
-    if (ac == 5 || ac == 6)
-    {
-        data = parsing(ac, av);
-        if (!data)
-            return 1;
-        data = init_chopstick(data);
-        if (!data)
-            return 1;
-        philo = init_philo(data);
-        if (!philo)
-            return 1;
-        take_chopstick(philo, data);
-        init_threads(philo, data);
-    }
-    return 0;
+    data = philo->data;
+    if (data->chopsticks)
+        free(data->chopsticks);
+    if(data)
+        free(data);
+    if (philo)
+        free(philo);
+    return;
+}
+
+long    get_time()
+{
+    struct timeval time;
+    gettimeofday(&time, NULL);
+    return ((time.tv_usec / 1000) + (time.tv_sec * 1000));
 }
