@@ -1,35 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_bonus.c                                      :+:      :+:    :+:   */
+/*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:38:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/24 18:11:57 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:36:37 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_bonus.h"
-
-void clean(t_philosophers *philo)
-{
-    t_data *data;
-
-    data = philo->data;
-    free(philo);
-    free(data->chopsticks);
-    free(data->threads);
-    free(data);
-    exit(1);
-}
-
-long    get_time()
-{
-    struct timeval time;
-    gettimeofday(&time, NULL);
-    return ((time.tv_usec / 1000) + (time.tv_sec * 1000));
-}
+#include "philo.h"
 
 int main (int ac, char **av)
 {
@@ -39,7 +20,17 @@ int main (int ac, char **av)
     if (ac == 5 || ac == 6)
     {
         data = parsing(ac, av);
+        if (!data)
+            return 1;
+        data = init_chopstick(data);
+        if (!data)
+            return 1;
         philo = init_philo(data);
+        if (!philo)
+            return 1;
+        take_chopstick(philo, data);
+        init_threads(philo, data);
+        clean(philo);
     }
-    exit(1);
+    return 0;
 }

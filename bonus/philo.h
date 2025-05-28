@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_bonus.h                                      :+:      :+:    :+:   */
+/*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:02:13 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/24 18:11:34 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:28:18 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_BONUS_H
-# define PHILO_BONUS_H
+#ifndef PHILO_H
+# define PHILO_H
 
 #include <pthread.h>
 #include <stdio.h>
@@ -22,38 +22,44 @@
 
 typedef struct s_data
 {
+    int must_stop;
+    pthread_mutex_t mutex_for_printf;;
     long start_time;
+    pthread_mutex_t *chopsticks;
     int number_of_philosophers;
     int time_to_die;
     int time_to_eat;
     int time_to_sleep;
-    int number_of_times_each_philosopher_must_eat;
+    int n_of_t_e_p_m_e;
 }t_data;
 
 typedef struct s_philosophers
 {
+    pthread_t thread;
     int id;
-    int pid;
     long last_meal;
+    int nb_eat;
+    pthread_mutex_t *r_chopstick;
+    pthread_mutex_t *l_chopstick;
     t_data *data;
 } t_philosophers;
 
 /*-------------------- parsing----------------*/
 t_data *parsing(int ac, char **av);
 
-/*-------------------- clean------------------*/
-void clean(t_philosophers *philo);
+/*---------------- initialisation-------------*/
+t_philosophers *init_philo(t_data *data);
+t_data  *init_chopstick(t_data *data);
+void take_chopstick(t_philosophers *philo,t_data *data);
+void init_threads(t_philosophers *philo, t_data *data);
 
+/*-------------------- tools------------------*/
+void clean(t_philosophers *philo);
 long    get_time();
+void ft_printf(t_philosophers *philo, char *str, long time, int id);
 
 /*---------------- algorithme----------------*/
 void *routine(void *arg);
-
-
-/*---------------- initialisation-------------*/
-t_philosophers *init_philo(t_data *data);
-// void init_chopstick(t_data *data);
-// void take_chopstick(t_philosophers *philo,t_data *data);
-// void init_threads(t_philosophers *philo, t_data *data);
+void *monitor(void *philo);
 
 #endif

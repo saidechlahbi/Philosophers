@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/26 18:41:48 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:41:06 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void *monitor(void *arg)
             if (how_mush(philo))
                 return (philo->data->must_stop = 1, NULL);
         usleep(philo->data->time_to_die * 1000);
-        i = 0;
-        while (i < number_philo)
+        i = -1;
+        while (++i < number_philo)
         {
             if (get_time() - philo[i].last_meal >= philo[i].data->time_to_die)
             {
@@ -52,11 +52,9 @@ void *monitor(void *arg)
                 printf("%ld  %d  died\n", get_time() - philo[i].data->start_time, philo[i].id);
                 return (NULL);
             }
-            i++;
         }
-        usleep(500);
     }
-    return NULL;
+    return (NULL);
 }
 
 static void daily_day (t_philosophers *philo)
@@ -106,12 +104,10 @@ void *routine(void *arg)
     }
     if (philo->id % 2)
         usleep(1000);
-    while (1)
+    while (philo->data->must_stop == 0)
     {
-        if (philo->data->must_stop)
-            return NULL;
         taken_forck(philo);
         daily_day(philo);
     }
-    return philo;
+    return NULL;
 }

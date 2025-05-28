@@ -15,10 +15,11 @@ HEADER =  philo.h
 
 
 # Rules
-all: $(NAME)
+all: $(NAME) 
 
 $(NAME): $(OBJ) $(HEADER)
 	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
+	mv *.o obj
 
 clean:
 	rm -f $(OBJ)

@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:02:13 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/26 18:31:43 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/28 10:58:10 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 typedef struct s_data
 {
+    // pthread_mutex_t mutex_;
     int must_stop;
     pthread_mutex_t mutex_for_printf;;
     long start_time;
@@ -47,20 +48,19 @@ typedef struct s_philosophers
 /*-------------------- parsing----------------*/
 t_data *parsing(int ac, char **av);
 
-/*-------------------- clean------------------*/
-void clean(t_philosophers *philo);
-
-long    get_time();
-
-/*---------------- algorithme----------------*/
-void *routine(void *arg);
-void *monitor(void *philo);
-void ft_printf(t_philosophers *philo, char *str, long time, int id);
-
 /*---------------- initialisation-------------*/
 t_philosophers *init_philo(t_data *data);
 t_data  *init_chopstick(t_data *data);
 void take_chopstick(t_philosophers *philo,t_data *data);
 void init_threads(t_philosophers *philo, t_data *data);
+
+/*-------------------- tools------------------*/
+void clean(t_philosophers *philo);
+long    get_time();
+void ft_printf(t_philosophers *philo, char *str, long time, int id);
+
+/*---------------- algorithme----------------*/
+void *routine(void *arg);
+void *monitor(void *philo);
 
 #endif

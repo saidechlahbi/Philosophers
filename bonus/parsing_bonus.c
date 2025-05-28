@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_bonus.c                                    :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:44:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/21 18:22:06 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:09:45 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_bonus.h"
+#include "philo.h"
 
 static int ft_atoi(char *str, t_data *data)
 {
@@ -56,6 +56,13 @@ static void look_at(int ac, char **av)
     }   
 }
 
+static int check(t_data *data)
+{
+    if (data->number_of_philosophers == 0 || data->time_to_die == 0
+    || data->time_to_eat == 0 || data->time_to_sleep == 0)
+        return 1;
+    return 0;
+}
 t_data *parsing(int ac, char **av)
 {
     t_data *data;
@@ -64,23 +71,16 @@ t_data *parsing(int ac, char **av)
     look_at(ac, av);
     data = malloc(sizeof(t_data));
     if (!data)
-        exit(1);
-    memset(data, 0, sizeof(t_data));
-    if (ac == 5)
-    {
-        data->number_of_philosophers = ft_atoi(av[1], data);
-        data->time_to_die = ft_atoi(av[2], data);
-        data->time_to_eat = ft_atoi(av[3], data);
-        data->time_to_sleep = ft_atoi(av[4], data);
-    }
-    else
-    {
-        data->number_of_philosophers = ft_atoi(av[1], data);
-        data->time_to_die = ft_atoi(av[2], data);
-        data->time_to_eat = ft_atoi(av[3], data);
-        data->time_to_sleep = ft_atoi(av[4], data);
-        data->number_of_times_each_philosopher_must_eat = ft_atoi(av[5], data);
-    }
-    data->start_time = get_time();
+        return NULL;
+    if (!memset(data, 0, sizeof(t_data)))
+        return (free(data), NULL);
+    data->number_of_philosophers = ft_atoi(av[1], data);
+    data->time_to_die = ft_atoi(av[2], data);
+    data->time_to_eat = ft_atoi(av[3], data);
+    data->time_to_sleep = ft_atoi(av[4], data);
+    if (ac == 6)
+        data->n_of_t_e_p_m_e = ft_atoi(av[5], data);
+    if (check(data) || (ac == 6 && data->n_of_t_e_p_m_e == 0))
+        return (free(data), NULL);
     return data;
 }

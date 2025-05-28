@@ -1,70 +1,113 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   algorithme_bonus.c                                 :+:      :+:    :+:   */
+/*   algorithme.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/24 17:25:15 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:41:06 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_bonus.h"
+#include "philo.h"
 
 
-void eating (t_philosophers *arg)
+int how_mush(t_philosophers *philo)
 {
-    printf("%ld  %d  is eating\n", get_time() - arg->data->start_time, arg->id);
-    usleep(arg->data->time_to_eat * 1000);
-    pthread_mutex_unlock(arg->r_chopstick);
-    pthread_mutex_unlock(arg->l_chopstick);
-}
-void thinking(t_philosophers *arg)
-{
-    printf("%ld  %d  is thinking\n", get_time() - arg->data->start_time, arg->id);
-    // usleep((arg->data->time_to_die - (arg->data->time_to_eat + arg->data->time_to_sleep)) * 1000);
+    int i;
+
+    i = 0;
+    while (i < philo->data->number_of_philosophers)
+    {
+        if (philo[i].nb_eat >= philo[i].data->n_of_t_e_p_m_e)
+            i++;
+        else
+            return 0;        
+    }
+    printf("simulation stop\n");
+    return 1;
 }
 
-void sleeping(t_philosophers *arg)
+void *monitor(void *arg)
 {
-    printf("%ld  %d  is sleeping\n", get_time() - arg->data->start_time, arg->id);
-    usleep(arg->data->time_to_sleep * 1000);
+    t_philosophers *philo;
+    int number_philo;
+    int i;
+
+    philo = (t_philosophers *)arg;
+    number_philo = philo->data->number_of_philosophers;
+    while (1)
+    {
+        if (philo->data->n_of_t_e_p_m_e)
+            if (how_mush(philo))
+                return (philo->data->must_stop = 1, NULL);
+        usleep(philo->data->time_to_die * 1000);
+        i = -1;
+        while (++i < number_philo)
+        {
+            if (get_time() - philo[i].last_meal >= philo[i].data->time_to_die)
+            {
+                philo->data->must_stop = 1;
+                printf("%ld  %d  died\n", get_time() - philo[i].data->start_time, philo[i].id);
+                return (NULL);
+            }
+        }
+    }
+    return (NULL);
 }
+
+static void daily_day (t_philosophers *philo)
+{
+    philo->nb_eat++;
+    ft_printf(philo ,"%ld  %d  is eating\n", get_time() - philo->data->start_time, philo->id);
+    usleep(philo->data->time_to_eat * 1000);
+    pthread_mutex_unlock(philo->r_chopstick);
+    pthread_mutex_unlock(philo->l_chopstick);
+    ft_printf(philo ,"%ld  %d  is sleeping\n", get_time() - philo->data->start_time, philo->id);
+    usleep(philo->data->time_to_sleep * 1000);
+    ft_printf(philo ,"%ld  %d  is thinking\n", get_time() - philo->data->start_time, philo->id);
+}
+
+static void taken_forck(t_philosophers *philo)
+{
+    if (philo->id % 2 == 0)
+    {
+        pthread_mutex_lock(philo->l_chopstick);
+        ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+        pthread_mutex_lock(philo->r_chopstick);
+        ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+    }else
+    {
+        pthread_mutex_lock(philo->l_chopstick);
+        ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+        pthread_mutex_lock(philo->r_chopstick);
+        ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+    }
+    philo->last_meal = get_time();
+}
+
 void *routine(void *arg)
 {
     t_philosophers *philo;
 
     philo = (t_philosophers *)arg;
+    if (philo->last_meal == 0)
+        philo->last_meal = philo->data->start_time;
     if (philo->data->number_of_philosophers == 1)
     {
         pthread_mutex_lock(philo->l_chopstick);
         philo->last_meal = get_time();
-        printf("%ld  %d has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
+        ft_printf(philo ,"%ld  %d  has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
         usleep(philo->data->time_to_die);
         return NULL;
     }
     if (philo->id % 2)
         usleep(1000);
-    while (1)
+    while (philo->data->must_stop == 0)
     {
-        if (philo->id % 2 == 0)
-        {
-            pthread_mutex_lock(philo->l_chopstick);
-            printf("%ld  %d has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
-            pthread_mutex_lock(philo->r_chopstick);
-            printf("%ld  %d has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
-        }else
-        {
-            pthread_mutex_lock(philo->l_chopstick);
-            printf("%ld  %d has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
-            pthread_mutex_lock(philo->r_chopstick);
-            printf("%ld  %d has taken a fork\n",  get_time() - philo->data->start_time, philo->id);
-        }
-        philo->last_meal = get_time();
-        eating(philo);
-        sleeping(philo);
-        thinking(philo);
+        taken_forck(philo);
+        daily_day(philo);
     }
-    return philo;
+    return NULL;
 }
