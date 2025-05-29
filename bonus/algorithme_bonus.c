@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   algorithme.c                                       :+:      :+:    :+:   */
+/*   algorithme_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/27 13:41:06 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:06:59 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,12 @@ void *routine(void *arg)
         daily_day(philo);
     }
     return NULL;
+}
+
+
+void init_philosophers(t_philosophers *philo)
+{
+    sem_t *semaphore;
+
+    semaphore = sem_open()
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_all.c                                         :+:      :+:    :+:   */
+/*   init_all_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 14:05:41 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/26 18:20:30 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:04:20 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,20 @@ void init_threads(t_philosophers *philo, t_data *data)
     {
         clean(philo);
         return;
+    }
+}
+
+void routine()
+
+void init_philosophers(t_philosophers *philo)
+{
+    int i;
+
+    i = 0;
+    while (i < philo->data->number_of_philosophers)
+    {
+        philo[i].pid = fork();
+        if (philo[i].pid == 0)
+            routine(&philo[i]);
     }
 }

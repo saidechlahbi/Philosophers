@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:02:13 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/05/27 13:28:18 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:06:29 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/time.h>
+
+
+#include <semaphore.h>
 
 typedef struct s_data
 {
@@ -35,6 +38,7 @@ typedef struct s_data
 
 typedef struct s_philosophers
 {
+    int pid;
     pthread_t thread;
     int id;
     long last_meal;
