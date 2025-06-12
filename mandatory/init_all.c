@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 14:05:41 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/10 17:32:23 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/06/11 10:48:15 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,14 @@
 t_philosophers	*init_philo(t_data *data)
 {
 	int				i;
+	int				value;
 	t_philosophers	*philosophers;
 
-	philosophers = malloc(data->number_of_philosophers
-			* sizeof(t_philosophers));
+	value = data->number_of_philosophers;
+	philosophers = malloc(value * sizeof(t_philosophers));
 	if (!philosophers)
-	{
-		free(data);
-		return (NULL);
-	}
-	if (!memset(philosophers, 0, data->number_of_philosophers
-			* sizeof(t_philosophers)))
+		return (free(data), NULL);
+	if (!memset(philosophers, 0, value * sizeof(t_philosophers)))
 	{
 		free(data);
 		free(philosophers);
@@ -45,23 +42,23 @@ t_philosophers	*init_philo(t_data *data)
 t_data	*init_chopstick(t_data *data)
 {
 	int	i;
+	int	value;
 
-	data->chopsticks = malloc(data->number_of_philosophers
-			* sizeof(pthread_mutex_t));
+	value = data->number_of_philosophers;
+	data->chopsticks = malloc(value * sizeof(pthread_mutex_t));
 	if (!data->chopsticks)
 	{
 		free(data);
 		return (NULL);
 	}
-	if (!memset(data->chopsticks, 0, data->number_of_philosophers
-			* sizeof(pthread_mutex_t)))
+	if (!memset(data->chopsticks, 0, value * sizeof(pthread_mutex_t)))
 	{
 		free(data->chopsticks);
 		free(data);
 		return (NULL);
 	}
 	i = -1;
-	while (i < data->number_of_philosophers - 1)
+	while (i++ < value - 1)
 		pthread_mutex_init(&data->chopsticks[i], NULL);
 	pthread_mutex_init(&data->mutex_for_printf, NULL);
 	pthread_mutex_init(&data->mutex, NULL);
@@ -94,15 +91,15 @@ static void	create(t_philosophers *philo, t_data *data)
 		philo[i].last_meal = data->start_time;
 	i = 0;
 	while (i < data->number_of_philosophers)
-    {
+	{
 		if (pthread_create(&philo[i].thread, NULL, routine,
 				(void *)(&philo[i])))
 		{
 			clean(philo);
 			return ;
 		}
-        i++;
-    }
+		i++;
+	}
 	if (pthread_create(&data->monitoring, NULL, monitor, (void *)philo))
 	{
 		clean(philo);
@@ -115,13 +112,17 @@ void	init_threads(t_philosophers *philo, t_data *data)
 	int	i;
 
 	create(philo, data);
-	i = -1;
-	while (i++ < data->number_of_philosophers - 1)
+	
+	i = 0;
+	while (i < data->number_of_philosophers)
+	{
 		if (pthread_join(philo[i].thread, NULL))
 		{
 			clean(philo);
 			return ;
 		}
+		i++;
+	}
 	if (pthread_join(data->monitoring, NULL))
 	{
 		clean(philo);
