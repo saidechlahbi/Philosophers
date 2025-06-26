@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:17:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/11 10:43:08 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/06/26 00:29:52 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	assistance(t_philosophers *philo)
 			philo->data->must_stop = 1;
 			pthread_mutex_unlock(&philo->data->mutex_most_stop);
 			time = get_time() - philo[i].data->start_time;
-			printf("%ld  %d  died\n", time, philo[i].id);
+			ft_printf(&philo[i], "%ld  %d  died\n", time, philo[i].id);
 			return (1);
 		}
 	}

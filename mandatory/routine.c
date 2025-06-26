@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/11 10:41:09 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:56:07 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	*routine(void *arg)
 		if (philo->data->must_stop == 1)
 		{
 			pthread_mutex_unlock(&philo->data->mutex_most_stop);
-			return (NULL);
+			break;
 		}
 		pthread_mutex_unlock(&philo->data->mutex_most_stop);
 		taken_forck(philo);
