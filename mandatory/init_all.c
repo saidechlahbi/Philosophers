@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 14:05:41 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/25 18:21:33 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/16 04:40:13 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ void	init_threads(t_philosophers *philo, t_data *data)
 	int	i;
 
 	create(philo, data);
-	
 	i = 0;
 	while (i < data->number_of_philosophers)
 	{
