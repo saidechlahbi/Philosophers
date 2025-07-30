@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 14:05:41 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/16 04:40:13 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/30 21:38:42 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_philosophers	*init_philo(t_data *data)
 		philosophers[i].id = i + 1;
 		philosophers[i].data = data;
 		pthread_mutex_init(&philosophers[i].mutex_last_meal, NULL);
+		pthread_mutex_init(&philosophers[i].mutex_nb_eat, NULL);
 		i++;
 	}
 	return (philosophers);
@@ -61,7 +62,7 @@ t_data	*init_chopstick(t_data *data)
 	while (i++ < value - 1)
 		pthread_mutex_init(&data->chopsticks[i], NULL);
 	pthread_mutex_init(&data->mutex_for_printf, NULL);
-	pthread_mutex_init(&data->mutex, NULL);
+	pthread_mutex_init(&data->mutex_nb_ph, NULL);
 	pthread_mutex_init(&data->mutex_most_stop, NULL);
 	return (data);
 }
@@ -81,13 +82,13 @@ void	take_chopstick(t_philosophers *philo, t_data *data)
 	philo[i].r_chopstick = &data->chopsticks[0];
 }
 
-static void	create(t_philosophers *philo, t_data *data)
+static int	create(t_philosophers *philo, t_data *data)
 {
 	int	i;
 
 	philo->data->start_time = get_time();
 	i = -1;
-	while (i++ < data->number_of_philosophers - 1)
+	while (i++ < (data->number_of_philosophers - 1))
 		philo[i].last_meal = data->start_time;
 	i = 0;
 	while (i < data->number_of_philosophers)
@@ -96,35 +97,37 @@ static void	create(t_philosophers *philo, t_data *data)
 				(void *)(&philo[i])))
 		{
 			clean(philo);
-			return ;
+			return 1;
 		}
 		i++;
 	}
 	if (pthread_create(&data->monitoring, NULL, monitor, (void *)philo))
 	{
 		clean(philo);
-		return ;
+		return 1;
 	}
+	return 0;
 }
 
 void	init_threads(t_philosophers *philo, t_data *data)
 {
 	int	i;
 
-	create(philo, data);
+	if (create(philo, data))
+		return ;
 	i = 0;
+	if (pthread_join(data->monitoring, NULL))
+	{
+		clean(philo);
+			return ;
+	}
 	while (i < data->number_of_philosophers)
 	{
 		if (pthread_join(philo[i].thread, NULL))
 		{
 			clean(philo);
-			return ;
+				return ;
 		}
 		i++;
-	}
-	if (pthread_join(data->monitoring, NULL))
-	{
-		clean(philo);
-		return ;
 	}
 }

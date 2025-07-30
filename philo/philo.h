@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:02:13 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/10 16:46:03 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/30 18:43:09 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,17 @@
 
 typedef struct s_data
 {
-	pthread_mutex_t	mutex;
-	pthread_mutex_t	mutex_most_stop;
+	int				number_of_philosophers;
+	pthread_mutex_t	mutex_nb_ph;
 	int				must_stop;
-	pthread_mutex_t	mutex_for_printf;
+	pthread_mutex_t	mutex_most_stop;
 	long			start_time;
 	pthread_mutex_t	*chopsticks;
-	int				number_of_philosophers;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				n_of_t_e_p_m_e;
+	pthread_mutex_t	mutex_for_printf;
 	pthread_t		monitoring;
 }					t_data;
 
@@ -41,10 +41,11 @@ typedef struct s_philosophers
 	int				id;
 	pthread_t		thread;
 	long			last_meal;
+	pthread_mutex_t	mutex_last_meal;
 	int				nb_eat;
+	pthread_mutex_t mutex_nb_eat;
 	pthread_mutex_t	*r_chopstick;
 	pthread_mutex_t	*l_chopstick;
-	pthread_mutex_t	mutex_last_meal;
 	t_data			*data;
 }					t_philosophers;
 
@@ -60,9 +61,8 @@ void				init_threads(t_philosophers *philo, t_data *data);
 /*-------------------- tools------------------*/
 void				clean(t_philosophers *philo);
 long				get_time(void);
-void				ft_printf(t_philosophers *philo, char *str, long time,
-						int id);
-
+void				ft_printf(t_philosophers *philo, char *str, int id);
+void ft_usleep(t_philosophers *philo, long time);
 /*---------------- algorithme----------------*/
 void				*routine(void *arg);
 void				*monitor(void *arg);

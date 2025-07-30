@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:17:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/06/26 00:29:52 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/30 21:53:13 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,20 @@ static int	how_mush(t_philosophers *philo)
 	int	num_philo;
 
 	i = 0;
-	pthread_mutex_lock(&philo->data->mutex);
+	pthread_mutex_lock(&philo->data->mutex_nb_ph);
 	num_philo = philo->data->number_of_philosophers;
-	pthread_mutex_unlock(&philo->data->mutex);
+	pthread_mutex_unlock(&philo->data->mutex_nb_ph);
 	while (i < num_philo)
-	{
+	{	pthread_mutex_lock(&philo[i].mutex_nb_eat);
 		if (philo[i].nb_eat >= philo[i].data->n_of_t_e_p_m_e)
 			i++;
 		else
+		{
+			pthread_mutex_unlock(&philo[i].mutex_nb_eat);
 			return (0);
+		}
+		pthread_mutex_unlock(&philo[i].mutex_nb_eat);
 	}
-	printf("simulation stop\n");
 	return (1);
 }
 
@@ -38,22 +41,21 @@ static int	assistance(t_philosophers *philo)
 	long	time;
 	int		i;
 
-	pthread_mutex_lock(&philo->data->mutex);
+	pthread_mutex_lock(&philo->data->mutex_nb_ph);
 	number_philo = philo->data->number_of_philosophers;
-	pthread_mutex_unlock(&philo->data->mutex);
+	pthread_mutex_unlock(&philo->data->mutex_nb_ph);
 	i = -1;
 	while (++i < number_philo)
 	{
 		pthread_mutex_lock(&philo[i].mutex_last_meal);
 		time = philo[i].last_meal;
 		pthread_mutex_unlock(&philo[i].mutex_last_meal);
-		if (get_time() - time >= philo[i].data->time_to_die)
+		if ((get_time() - time ) >= philo[i].data->time_to_die)
 		{
 			pthread_mutex_lock(&philo->data->mutex_most_stop);
 			philo->data->must_stop = 1;
 			pthread_mutex_unlock(&philo->data->mutex_most_stop);
-			time = get_time() - philo[i].data->start_time;
-			ft_printf(&philo[i], "%ld  %d  died\n", time, philo[i].id);
+			ft_printf(&philo[i], "%ld  %d  died\n", philo[i].id);
 			return (1);
 		}
 	}
@@ -77,9 +79,9 @@ void	*monitor(void *arg)
 				return (NULL);
 			}
 		}
-		usleep(philo->data->time_to_die * 1000);
 		if (assistance(philo))
-			return (NULL);
+			return (NULL);		
+		ft_usleep(philo, 100);
 	}
 	return (NULL);
 }
