@@ -6,11 +6,19 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:38:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/30 22:12:33 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/31 02:06:51 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+long	get_time(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return ((time.tv_usec / 1000) + (time.tv_sec * 1000));
+}
 
 void ft_usleep(t_philosophers *philo, long time)
 {
@@ -53,37 +61,28 @@ void	ft_printf(t_philosophers *philo, char *str, int id)
 {
 	int val;
 	long  time;
+	int must_stop;
 
 	val = 0;
+	val = ft_search(str);
+	pthread_mutex_lock(&philo->data->mutex_most_stop);
+	must_stop = philo->data->must_stop;
+	pthread_mutex_unlock(&philo->data->mutex_most_stop);
 	pthread_mutex_lock(&philo->data->mutex_for_printf);
 	time = get_time() - philo->data->start_time;
-	pthread_mutex_unlock(&philo->data->mutex_for_printf);
-	pthread_mutex_lock(&philo->data->mutex_most_stop);
-	if (philo->data->must_stop == 1)
+	if (must_stop == 1)
 	{
-		val = ft_search(str);
-		pthread_mutex_unlock(&philo->data->mutex_most_stop);
 		if (val == 1)
 		{
-			pthread_mutex_lock(&philo->data->mutex_for_printf);
 			printf(str, time, id);
 			pthread_mutex_unlock(&philo->data->mutex_for_printf);
 			return;
 		}
+		pthread_mutex_unlock(&philo->data->mutex_for_printf);
 		return ;
 	}
-	pthread_mutex_unlock(&philo->data->mutex_most_stop);
-	pthread_mutex_lock(&philo->data->mutex_for_printf);
 	printf(str, time, id);
 	pthread_mutex_unlock(&philo->data->mutex_for_printf);
-}
-
-long	get_time(void)
-{
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	return ((time.tv_usec / 1000) + (time.tv_sec * 1000));
 }
 
 void clean(t_philosophers *philo)

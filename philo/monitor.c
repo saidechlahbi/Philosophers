@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:17:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/30 21:53:13 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/31 02:55:32 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ static int	how_mush(t_philosophers *philo)
 {
 	int	i;
 	int	num_philo;
+	int count;
 
+	count = 0;
 	i = 0;
 	pthread_mutex_lock(&philo->data->mutex_nb_ph);
 	num_philo = philo->data->number_of_philosophers;
@@ -24,15 +26,13 @@ static int	how_mush(t_philosophers *philo)
 	while (i < num_philo)
 	{	pthread_mutex_lock(&philo[i].mutex_nb_eat);
 		if (philo[i].nb_eat >= philo[i].data->n_of_t_e_p_m_e)
-			i++;
-		else
-		{
-			pthread_mutex_unlock(&philo[i].mutex_nb_eat);
-			return (0);
-		}
+			count++;
 		pthread_mutex_unlock(&philo[i].mutex_nb_eat);
+		i++;
 	}
-	return (1);
+	if (count == num_philo)
+		return 1;
+	return 0;
 }
 
 static int	assistance(t_philosophers *philo)
@@ -44,8 +44,8 @@ static int	assistance(t_philosophers *philo)
 	pthread_mutex_lock(&philo->data->mutex_nb_ph);
 	number_philo = philo->data->number_of_philosophers;
 	pthread_mutex_unlock(&philo->data->mutex_nb_ph);
-	i = -1;
-	while (++i < number_philo)
+	i = 0;
+	while (i < number_philo)
 	{
 		pthread_mutex_lock(&philo[i].mutex_last_meal);
 		time = philo[i].last_meal;
@@ -58,6 +58,7 @@ static int	assistance(t_philosophers *philo)
 			ft_printf(&philo[i], "%ld  %d  died\n", philo[i].id);
 			return (1);
 		}
+		i++;
 	}
 	return (0);
 }

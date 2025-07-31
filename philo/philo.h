@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:02:13 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/30 18:43:09 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/31 01:16:06 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ typedef struct s_data
 
 typedef struct s_philosophers
 {
-	int				id;
 	pthread_t		thread;
+	int				id;
 	long			last_meal;
 	pthread_mutex_t	mutex_last_meal;
 	int				nb_eat;
