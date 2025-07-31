@@ -6,35 +6,13 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:44:25 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/30 17:47:48 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/31 17:42:35 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	ft_atoi(char *str, t_data *data)
-{
-	long	result;
-
-	result = 0;
-	while ((*str >= 9 && *str <= 13) || *str == 127)
-		str++;
-	if (*str == '+')
-		str++;
-	while (*str && (*str >= '0' && *str <= '9'))
-	{
-		result = (result * 10) + (*str - 48);
-		if (result < -2147483648 || result > 2147483647)
-		{
-			free(data);
-			exit(1);
-		}
-		str++;
-	}
-	return ((int)result);
-}
-
-static void	look_at(int ac, char **av)
+static int	look_at(int ac, char **av)
 {
 	int	i;
 	int	j;
@@ -50,10 +28,33 @@ static void	look_at(int ac, char **av)
 			else if (av[i][j] >= '0' && av[i][j] <= '9')
 				j++;
 			else
-				exit(1);
+				return (1);
 		}
 		i++;
 	}
+	return (0);
+}
+
+static int	ft_atoi(char *str, int *error)
+{
+	long	result;
+
+	result = 0;
+	while ((*str >= 9 && *str <= 13) || *str == 127)
+		str++;
+	if (*str == '+')
+		str++;
+	while (*str && (*str >= '0' && *str <= '9'))
+	{
+		result = (result * 10) + (*str - 48);
+		if (result < -2147483648 || result > 2147483647)
+		{
+			*error = 1;
+			return (0);
+		}
+		str++;
+	}
+	return ((int)result);
 }
 
 static int	check(t_data *data)
@@ -64,23 +65,45 @@ static int	check(t_data *data)
 	return (0);
 }
 
+static int	check_overflow(int ac, char **av)
+{
+	int	error;
+	int	i;
+
+	error = 0;
+	i = 0;
+	while (i < ac)
+	{
+		ft_atoi(av[i], &error);
+		if (error == 1)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 t_data	*parsing(int ac, char **av)
 {
 	t_data	*data;
+	int		error;
 
 	data = NULL;
-	look_at(ac, av);
+	error = 0;
+	if (look_at(ac, av))
+		return (NULL);
+	if (check_overflow(ac, av))
+		return (NULL);
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (NULL);
 	if (!memset(data, 0, sizeof(t_data)))
 		return (free(data), NULL);
-	data->number_of_philosophers = ft_atoi(av[1], data);
-	data->time_to_die = ft_atoi(av[2], data);
-	data->time_to_eat = ft_atoi(av[3], data);
-	data->time_to_sleep = ft_atoi(av[4], data);
+	data->number_of_philosophers = ft_atoi(av[1], &error);
+	data->time_to_die = ft_atoi(av[2], &error);
+	data->time_to_eat = ft_atoi(av[3], &error);
+	data->time_to_sleep = ft_atoi(av[4], &error);
 	if (ac == 6)
-		data->n_of_t_e_p_m_e = ft_atoi(av[5], data);
+		data->n_of_t_e_p_m_e = ft_atoi(av[5], &error);
 	if (check(data) || (ac == 6 && data->n_of_t_e_p_m_e == 0))
 		return (free(data), NULL);
 	return (data);

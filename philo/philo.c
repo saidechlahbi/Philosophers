@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:38:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/30 21:20:03 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/07/31 18:25:46 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,12 @@ int	main(int ac, char **av)
 		philo = init_philo(data);
 		if (!philo)
 			return (1);
-		data = init_chopstick(data);
+		data = init_chopstick(data, philo);
 		if (!data)
-			return (free(philo), 1);
+			return (clean(philo), 1);
 		take_chopstick(philo, data);
 		init_threads(philo, data);
 		clean(philo);
-		return 0;
 	}
 	return (0);
 }
