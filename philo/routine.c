@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/01 00:05:53 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/01 11:20:44 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,20 @@ static void	daily_day(t_philosophers *philo)
 
 static void	taken_forck(t_philosophers *philo)
 {
-	pthread_mutex_t	*second_fork;
-	pthread_mutex_t	*first_fork;
-
 	if (philo->l_chopstick < philo->r_chopstick)
 	{
-		first_fork = philo->l_chopstick;
-		second_fork = philo->r_chopstick;
+		pthread_mutex_lock(philo->l_chopstick);
+		ft_printf(philo, "%ld  %d  has taken a fork\n", philo->id);
+		pthread_mutex_lock(philo->r_chopstick);
+		ft_printf(philo, "%ld  %d  has taken a fork\n", philo->id);
 	}
 	else
 	{
-		first_fork = philo->r_chopstick;
-		second_fork = philo->l_chopstick;
+		pthread_mutex_lock(philo->r_chopstick);
+		ft_printf(philo, "%ld  %d  has taken a fork\n", philo->id);
+		pthread_mutex_lock(philo->l_chopstick);
+		ft_printf(philo, "%ld  %d  has taken a fork\n", philo->id);
 	}
-	pthread_mutex_lock(first_fork);
-	ft_printf(philo, "%ld  %d  has taken a fork\n", philo->id);
-	pthread_mutex_lock(second_fork);
-	ft_printf(philo, "%ld  %d  has taken a fork\n", philo->id);
 	pthread_mutex_lock(&philo->mutex_last_meal);
 	philo->last_meal = get_time();
 	pthread_mutex_unlock(&philo->mutex_last_meal);
