@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:38:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/01 00:24:09 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/03 23:39:52 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_usleep(t_philosophers *philo, long time)
 			return ;
 		}
 		pthread_mutex_unlock(&(philo->data->mutex_most_stop));
-		usleep(500);
+		usleep(100);
 	}
 	return ;
 }

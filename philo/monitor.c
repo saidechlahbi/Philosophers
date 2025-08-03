@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:17:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/01 00:24:58 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/03 23:40:18 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	*monitor(void *arg)
 		}
 		if (assistance(philo))
 			return (NULL);
-		ft_usleep(philo, 10);
+		ft_usleep(philo, 1);
 	}
 	return (NULL);
 }

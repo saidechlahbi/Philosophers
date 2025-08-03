@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:03:51 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/01 11:20:44 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/04 00:13:50 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ static void	daily_day(t_philosophers *philo)
 	pthread_mutex_unlock(&philo->mutex_nb_eat);
 	ft_printf(philo, "%ld  %d  is eating\n", philo->id);
 	ft_usleep(philo, philo->data->time_to_eat);
-	if (philo->l_chopstick < philo->r_chopstick)
-	{
-		pthread_mutex_unlock(philo->r_chopstick);
+	// if (philo->l_chopstick < philo->r_chopstick)
+	// {
+	// 	pthread_mutex_unlock(philo->r_chopstick);
+	// 	pthread_mutex_unlock(philo->l_chopstick);
+	// }
+	// else
+	// {
 		pthread_mutex_unlock(philo->l_chopstick);
-	}
-	else
-	{
-		pthread_mutex_unlock(philo->l_chopstick);
 		pthread_mutex_unlock(philo->r_chopstick);
-	}
+	// }
 	ft_printf(philo, "%ld  %d  is sleeping\n", philo->id);
 	ft_usleep(philo, philo->data->time_to_sleep);
 	ft_printf(philo, "%ld  %d  is thinking\n", philo->id);
@@ -37,7 +37,7 @@ static void	daily_day(t_philosophers *philo)
 
 static void	taken_forck(t_philosophers *philo)
 {
-	if (philo->l_chopstick < philo->r_chopstick)
+	if (philo->id % 2)
 	{
 		pthread_mutex_lock(philo->l_chopstick);
 		ft_printf(philo, "%ld  %d  has taken a fork\n", philo->id);
