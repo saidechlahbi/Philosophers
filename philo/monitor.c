@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:17:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/03 23:40:18 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/04 20:23:56 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ static int	how_mush(t_philosophers *philo)
 
 	count = 0;
 	i = 0;
-	pthread_mutex_lock(&philo->data->mutex_nb_ph);
 	num_philo = philo->data->number_of_philosophers;
-	pthread_mutex_unlock(&philo->data->mutex_nb_ph);
 	while (i < num_philo)
 	{
 		pthread_mutex_lock(&philo[i].mutex_nb_eat);
@@ -42,9 +40,7 @@ static int	assistance(t_philosophers *philo)
 	long	time;
 	int		i;
 
-	pthread_mutex_lock(&philo->data->mutex_nb_ph);
 	number_philo = philo->data->number_of_philosophers;
-	pthread_mutex_unlock(&philo->data->mutex_nb_ph);
 	i = 0;
 	while (i < number_philo)
 	{
@@ -56,6 +52,8 @@ static int	assistance(t_philosophers *philo)
 			pthread_mutex_lock(&philo->data->mutex_most_stop);
 			philo->data->must_stop = 1;
 			pthread_mutex_unlock(&philo->data->mutex_most_stop);
+			time = get_time() - philo[i].data->start_time;
+			printf("%ld  %d  died\n", time, philo[i].id);
 			ft_printf(&philo[i], "%ld  %d  died\n", philo[i].id);
 			return (1);
 		}

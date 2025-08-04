@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 18:16:08 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/01 00:07:05 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/04 20:00:11 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	clean(t_philosophers *philo)
 		return ;
 	help(philo);
 	pthread_mutex_destroy(&data->mutex_for_printf);
-	pthread_mutex_destroy(&data->mutex_nb_ph);
 	pthread_mutex_destroy(&data->mutex_most_stop);
 	pthread_mutex_destroy(&data->mutex_failed);
 	free(data);

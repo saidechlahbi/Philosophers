@@ -6,11 +6,20 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 18:23:18 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/31 18:51:12 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:59:38 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void	destroy_mutex(t_philosophers *philo, int i)
+{
+	while (i--)
+	{
+		pthread_mutex_destroy(&philo[i].mutex_last_meal);
+		pthread_mutex_destroy(&philo[i].mutex_nb_eat);
+	}
+}
 
 static int	assisstance(t_philosophers *philo, t_data *data)
 {
@@ -22,14 +31,12 @@ static int	assisstance(t_philosophers *philo, t_data *data)
 	while (i < value)
 	{
 		if (pthread_mutex_init(&philo[i].mutex_last_meal, NULL))
-			return (1);
+			return (destroy_mutex(philo, i), 1);
 		if (pthread_mutex_init(&philo[i].mutex_nb_eat, NULL))
-			return (1);
+			return (destroy_mutex(philo, i), 1);
 		i++;
 	}
 	if (pthread_mutex_init(&data->mutex_for_printf, NULL))
-		return (1);
-	if (pthread_mutex_init(&data->mutex_nb_ph, NULL))
 		return (1);
 	if (pthread_mutex_init(&data->mutex_most_stop, NULL))
 		return (1);
@@ -53,13 +60,15 @@ t_data	*init_chopstick(t_data *data, t_philosophers *philo)
 	while (i < value)
 	{
 		if (pthread_mutex_init(&data->chopsticks[i], NULL))
+		{
+			while (i--)
+				pthread_mutex_destroy(&data->chopsticks[i]);
 			return (NULL);
+		}
 		i++;
 	}
 	if (assisstance(philo, data))
-	{
 		return (NULL);
-	}
 	return (data);
 }
 

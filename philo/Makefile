@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -Werror
 
 # Files
 FILES =   init_all.c  parsing.c  philo.c routine.c tools.c monitor.c clean.c \
@@ -16,10 +16,13 @@ HEADER =  philo.h
 
 
 # Rules
-all: $(NAME) 
+all: $(NAME)
 
 $(NAME): $(OBJ) $(HEADER)
 	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
+
+%.o: %.c $(HEADER)
+	$(CC) $(FLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJ)

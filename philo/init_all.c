@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 14:05:41 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/07/31 18:37:24 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:56:39 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ static int	create(t_philosophers *philo, t_data *data)
 	{
 		if (pthread_create(&philo[i].thread, NULL, routine,
 				(void *)(&philo[i])))
+		{
+			while (i--)
+				pthread_detach(philo[i].thread);
 			return (1);
+		}
 		i++;
 	}
 	if (pthread_create(&data->monitoring, NULL, monitor, (void *)philo))

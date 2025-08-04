@@ -6,7 +6,7 @@
 /*   By: sechlahb <sechlahb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:38:10 by sechlahb          #+#    #+#             */
-/*   Updated: 2025/08/03 23:39:52 by sechlahb         ###   ########.fr       */
+/*   Updated: 2025/08/04 20:25:24 by sechlahb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,44 +43,19 @@ void	ft_usleep(t_philosophers *philo, long time)
 	return ;
 }
 
-int	ft_search(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == 'd' && str[i + 1] == 'i')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 void	ft_printf(t_philosophers *philo, char *str, int id)
 {
-	int		val;
 	long	time;
-	int		must_stop;
 
-	val = 0;
-	val = ft_search(str);
 	pthread_mutex_lock(&philo->data->mutex_most_stop);
-	must_stop = philo->data->must_stop;
-	pthread_mutex_unlock(&philo->data->mutex_most_stop);
-	pthread_mutex_lock(&philo->data->mutex_for_printf);
-	time = get_time() - philo->data->start_time;
-	if (must_stop == 1)
+	if (philo->data->must_stop)
 	{
-		if (val == 1)
-		{
-			printf(str, time, id);
-			pthread_mutex_unlock(&philo->data->mutex_for_printf);
-			return ;
-		}
-		pthread_mutex_unlock(&philo->data->mutex_for_printf);
+		pthread_mutex_unlock(&philo->data->mutex_most_stop);
 		return ;
 	}
+	pthread_mutex_lock(&philo->data->mutex_for_printf);
+	time = get_time() - philo->data->start_time;
 	printf(str, time, id);
 	pthread_mutex_unlock(&philo->data->mutex_for_printf);
+	pthread_mutex_unlock(&philo->data->mutex_most_stop);
 }
